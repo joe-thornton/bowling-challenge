@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "name": "bowling-challenge",
   "version": "1.0.0",
   "description": "Bowling Challenge =================",
