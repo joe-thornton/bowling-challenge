@@ -18,9 +18,8 @@ class Game {
   }
 
   checkFrameStatus(current_frame) {
-    if (current_frame.turns.length === 2) {
+    if (current_frame.checkStatus() === "Complete") {
       this.scorecard.push(current_frame.total());
-      current_frame.status = "Complete";
       this.newFrame();
     }
   }
