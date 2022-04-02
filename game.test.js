@@ -34,8 +34,8 @@ describe("game", () => {
   it("rolls a gutter game", () => {
     game = new Game();
     for (let i = 0; i < 20; i++) {
-      game.roll(1);
+      game.roll(0);
     }
-    expect(game.showScorecard()).toEqual([2, 2, 2, 2, 2, 2, 2, 2, 2, 2]);
+    expect(game.totalScore()).toEqual(0);
   });
 });

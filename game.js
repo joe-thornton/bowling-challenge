@@ -27,6 +27,13 @@ class Game {
   showScorecard() {
     return this.scorecard;
   }
+
+  totalScore() {
+    return this.scorecard.reduce(
+      (previousValue, currentValue) => previousValue + currentValue,
+      0
+    );
+  }
 }
 
 module.exports = Game;
