@@ -15,6 +15,10 @@ class Game {
       );
     }
   }
+
+  showScorecard() {
+    return this.scorecard;
+  }
 }
 
 module.exports = Game;

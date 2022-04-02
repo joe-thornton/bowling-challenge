@@ -4,7 +4,7 @@ describe("game", () => {
   it("rolls a single figure roll and returns no score", () => {
     game = new Game();
     game.roll(1);
-    expect(game.scorecard).toEqual([]);
+    expect(game.showScorecard()).toEqual([]);
   });
 
   it("rolls 2 scores of 1", () => {
@@ -12,7 +12,7 @@ describe("game", () => {
     [1, 1].forEach((pins) => {
       game.roll(pins);
     });
-    expect(game.scorecard).toEqual([2]);
+    expect(game.showScorecard()).toEqual([2]);
   });
 
   it.skip("rolls 4 scores of 1", () => {
@@ -20,6 +20,6 @@ describe("game", () => {
     [1, 1, 1, 1].forEach((pins) => {
       game.roll(pins);
     });
-    expect(game.scorecard).toEqual([2, 2]);
+    expect(game.showScorecard()).toEqual([2, 2]);
   });
 });
