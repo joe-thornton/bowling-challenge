@@ -14,6 +14,10 @@ class Game {
   roll(pins) {
     let current_frame = this.frames.at(-1);
     current_frame.roll(pins);
+    this.checkFrameStatus(current_frame);
+  }
+
+  checkFrameStatus(current_frame) {
     if (current_frame.turns.length === 2) {
       this.scorecard.push(current_frame.total());
       current_frame.status = "Complete";
