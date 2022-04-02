@@ -15,7 +15,7 @@ describe("game", () => {
     expect(game.showScorecard()).toEqual([2]);
   });
 
-  it.skip("rolls 4 scores of 1", () => {
+  it("rolls 4 scores of 1", () => {
     game = new Game();
     [1, 1, 1, 1].forEach((pins) => {
       game.roll(pins);

@@ -1,18 +1,23 @@
+const Frame = require("./frame");
+
 class Game {
-  constructor() {
+  constructor(frame = new Frame()) {
     this.scorecard = [];
-    this.rolls = [];
+    this.frames = [];
+    this.frames.push(frame);
+  }
+
+  newFrame(frame = new Frame()) {
+    this.frames.push(frame);
   }
 
   roll(pins) {
-    this.rolls.push(1);
-    if (this.rolls.length % 2 === 0) {
-      this.scorecard.push(
-        this.rolls.reduce(
-          (previousValue, currentValue) => previousValue + currentValue,
-          0
-        )
-      );
+    let current_frame = this.frames.at(-1);
+    current_frame.roll(pins);
+    if (current_frame.turns.length === 2) {
+      this.scorecard.push(current_frame.total());
+      current_frame.status = "Complete";
+      this.newFrame();
     }
   }
 

@@ -1,6 +1,7 @@
 class Frame {
   constructor() {
     this.turns = [];
+    this.status = "In play";
   }
 
   roll(pins) {
