@@ -5,7 +5,8 @@ class Game {
     this.scorecard = [];
     this.frames = [];
     this.frames.push(frame);
-    this.spare_backlog = 0;
+    this.spareBacklog = 0;
+    this.strikeBacklog = 0;
   }
 
   newFrame(frame = new Frame()) {
@@ -13,33 +14,50 @@ class Game {
   }
 
   roll(pins) {
-    let current_frame = this.frames.at(-1);
-    current_frame.roll(pins);
+    let currentFrame = this.frames.at(-1);
+    currentFrame.roll(pins);
     this.processSpares(pins);
-    this.checkFrameStatus(current_frame);
+    this.processStrikes(pins);
+    this.checkFrameStatus(currentFrame);
+  }
+
+  processStrikes(currentRollsPins) {
+    if (this.strikeBacklog === 2) {
+      this.scorecard.push(20 + currentRollsPins);
+      --this.strikeBacklog;
+    }
+    // if (this.strikeBacklog === 1) {
+    //   if (currentRollsPins === 10) {
+    //     ++this.strikeBacklog;
+    //   } else {
+    //   }
+    // }
   }
 
   checkFrameStatus(current_frame) {
     let status = current_frame.frameStatus();
+    console.log(status);
     if (status !== "In progress") {
       if (status === "Complete") {
         this.scorecard.push(current_frame.total());
       } else if ((status = "Spare")) {
-        ++this.spare_backlog;
+        ++this.spareBacklog;
+      } else if ((status = "Strike")) {
+        ++this.strikeBacklog;
       }
       this.newFrame();
     }
   }
 
-  processSpares(current_frame_pins) {
-    if (this.spare_backlog === 1) {
-      this.scorecard.push(this.scoreSpare(current_frame_pins));
-      --this.spare_backlog;
+  processSpares(currentRollPins) {
+    if (this.spareBacklog === 1) {
+      this.scorecard.push(this.scoreSpare(currentRollPins));
+      --this.spareBacklog;
     }
   }
 
-  scoreSpare(current_frame_pins) {
-    return 10 + current_frame_pins;
+  scoreSpare(currentRollPins) {
+    return 10 + currentRollPins;
   }
 
   showScorecard() {

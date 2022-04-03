@@ -44,6 +44,25 @@ describe("game", () => {
     game.roll(8);
     game.roll(2);
     game.roll(3);
-    expect(game.showScorecard()).toEqual([13]);
+    game.roll(3);
+    expect(game.showScorecard()).toEqual([13, 6]);
+  });
+
+  it("can roll a strike", () => {
+    game = new Game();
+    game.roll(10);
+    game.roll(2);
+    game.roll(3);
+    game.roll(1);
+    expect(game.showScorecard()).toEqual([15, 5]);
+  });
+
+  it.skip("can roll 2 strikes", () => {
+    game = new Game();
+    game.roll(10);
+    game.roll(2);
+    game.roll(3);
+    game.roll(1);
+    expect(game.showScorecard()).toEqual([15, 5]);
   });
 });

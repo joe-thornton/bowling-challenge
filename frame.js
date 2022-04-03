@@ -9,7 +9,9 @@ class Frame {
   }
 
   frameStatus() {
-    if (this.turns.length === 2) {
+    if (this.turns === [10]) {
+      this.status = "Strike";
+    } else if (this.turns.length === 2) {
       if (this.total() === 10) {
         this.status = "Spare";
       } else {
