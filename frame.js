@@ -1,18 +1,22 @@
 class Frame {
   constructor() {
     this.turns = [];
-    this.status = "In play";
+    this.status = "In progress";
   }
 
   roll(pins) {
     this.turns.push(pins);
   }
 
-  checkStatus() {
+  frameStatus() {
     if (this.turns.length === 2) {
-      this.status = "Complete";
-      return this.status;
+      if (this.total() === 10) {
+        this.status = "Spare";
+      } else {
+        this.status = "Complete";
+      }
     }
+    return this.status;
   }
 
   total() {

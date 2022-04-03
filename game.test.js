@@ -38,4 +38,12 @@ describe("game", () => {
     }
     expect(game.totalScore()).toEqual(0);
   });
+
+  it("can roll a spare", () => {
+    game = new Game();
+    game.roll(8);
+    game.roll(2);
+    game.roll(3);
+    expect(game.showScorecard()).toEqual([13]);
+  });
 });
