@@ -57,12 +57,21 @@ describe("game", () => {
     expect(game.showScorecard()).toEqual([15, 5]);
   });
 
-  it.skip("can roll 2 strikes", () => {
+  it("can roll 2 strikes", () => {
     game = new Game();
+    game.roll(10);
     game.roll(10);
     game.roll(2);
     game.roll(3);
     game.roll(1);
-    expect(game.showScorecard()).toEqual([15, 5]);
+    expect(game.showScorecard()).toEqual([22, 15, 5]);
+  });
+
+  it("can roll a perfect game", () => {
+    game = new Game();
+    for (let i = 0; i < 12; i++) {
+      game.roll(10);
+    }
+    expect(game.totalScore()).toEqual(300);
   });
 });

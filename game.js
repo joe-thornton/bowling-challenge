@@ -2,11 +2,8 @@ const Frame = require("./frame");
 
 class Game {
   constructor(frame = new Frame()) {
-    this.scorecard = [];
     this.frames = [];
     this.frames.push(frame);
-    this.spareBacklog = 0;
-    this.strikeBacklog = 0;
   }
 
   newFrame(frame = new Frame()) {
@@ -16,56 +13,60 @@ class Game {
   roll(pins) {
     let currentFrame = this.frames.at(-1);
     currentFrame.roll(pins);
-    this.processSpares(pins);
-    this.processStrikes(pins);
-    this.checkFrameStatus(currentFrame);
+    this.processFrameStatus(currentFrame);
   }
 
-  processStrikes(currentRollsPins) {
-    if (this.strikeBacklog === 2) {
-      this.scorecard.push(20 + currentRollsPins);
-      --this.strikeBacklog;
-    }
-    // if (this.strikeBacklog === 1) {
-    //   if (currentRollsPins === 10) {
-    //     ++this.strikeBacklog;
-    //   } else {
-    //   }
-    // }
-  }
-
-  checkFrameStatus(current_frame) {
-    let status = current_frame.frameStatus();
-    console.log(status);
+  processFrameStatus(currentFrame) {
+    let status = currentFrame.frameStatus();
     if (status !== "In progress") {
-      if (status === "Complete") {
-        this.scorecard.push(current_frame.total());
-      } else if ((status = "Spare")) {
-        ++this.spareBacklog;
-      } else if ((status = "Strike")) {
-        ++this.strikeBacklog;
-      }
       this.newFrame();
     }
   }
 
-  processSpares(currentRollPins) {
-    if (this.spareBacklog === 1) {
-      this.scorecard.push(this.scoreSpare(currentRollPins));
-      --this.spareBacklog;
+  showScorecard() {
+    return this.calculateScorecard();
+  }
+
+  calculateScorecard() {
+    let scorecard = this.frames.map((frame, index) => {
+      if (frame.frameStatus() === "Complete") {
+        return frame.total();
+      } else if (frame.frameStatus() === "Spare") {
+        if (this.nextRoll(index) !== undefined) {
+          return 10 + this.nextRoll(index);
+        }
+      } else if (frame.frameStatus() === "Strike") {
+        if (this.nextTwoRolls(index) !== undefined) {
+          return 10 + this.nextTwoRolls(index);
+        }
+      }
+    });
+    let filteredScorecard = scorecard.filter((score) => {
+      return score !== undefined;
+    });
+    return filteredScorecard;
+  }
+
+  nextRoll(currentFrameIndex) {
+    return this.frames[currentFrameIndex + 1].firstRoll();
+  }
+
+  nextTwoRolls(currentFrameIndex) {
+    let nextFrame = this.frames[currentFrameIndex + 1];
+    if (nextFrame.hasTwoRolls() === true) {
+      return nextFrame.total();
+    } else {
+      if (nextFrame.firstRoll() === 10) {
+        let frameAfterNext = this.frames[currentFrameIndex + 2];
+        if (frameAfterNext.hasRolls() === true) {
+          return 10 + frameAfterNext.firstRoll();
+        }
+      }
     }
   }
 
-  scoreSpare(currentRollPins) {
-    return 10 + currentRollPins;
-  }
-
-  showScorecard() {
-    return this.scorecard;
-  }
-
   totalScore() {
-    return this.scorecard.reduce(
+    return this.calculateScorecard().reduce(
       (previousValue, currentValue) => previousValue + currentValue,
       0
     );

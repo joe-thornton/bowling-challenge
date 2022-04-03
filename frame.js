@@ -9,7 +9,7 @@ class Frame {
   }
 
   frameStatus() {
-    if (this.turns === [10]) {
+    if (this.turns[0] === 10) {
       this.status = "Strike";
     } else if (this.turns.length === 2) {
       if (this.total() === 10) {
@@ -19,6 +19,22 @@ class Frame {
       }
     }
     return this.status;
+  }
+
+  firstRoll() {
+    return this.turns[0];
+  }
+
+  hasTwoRolls() {
+    if (this.turns.length === 2) {
+      return true;
+    }
+  }
+
+  hasRolls() {
+    if (this.turns.length !== 0) {
+      return true;
+    }
   }
 
   total() {
