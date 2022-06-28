@@ -1,5 +1,6 @@
 class Frame {
-  constructor() {
+  constructor(frameNumber) {
+    this.frameNumber = frameNumber;
     this.turns = [];
     this.status = "In progress";
   }
@@ -9,13 +10,21 @@ class Frame {
   }
 
   frameStatus() {
-    if (this.turns[0] === 10) {
-      this.status = "Strike";
-    } else if (this.turns.length === 2) {
-      if (this.total() === 10) {
-        this.status = "Spare";
-      } else {
+    if (this.frameNumber === 10) {
+      if (this.turns.length === 2 && this.total() < 10) {
         this.status = "Complete";
+      } else if (this.turns.length === 3) {
+        this.status = "Complete";
+      }
+    } else {
+      if (this.turns[0] === 10) {
+        this.status = "Strike";
+      } else if (this.turns.length === 2) {
+        if (this.total() === 10) {
+          this.status = "Spare";
+        } else {
+          this.status = "Complete";
+        }
       }
     }
     return this.status;
@@ -26,7 +35,7 @@ class Frame {
   }
 
   hasTwoRolls() {
-    if (this.turns.length === 2) {
+    if (this.turns.length > 1) {
       return true;
     }
   }
@@ -35,6 +44,12 @@ class Frame {
     if (this.turns.length !== 0) {
       return true;
     }
+  }
+
+  twoRollScore() {
+    return this.turns
+      .slice(0, 2)
+      .reduce((previousValue, currentValue) => previousValue + currentValue, 0);
   }
 
   total() {

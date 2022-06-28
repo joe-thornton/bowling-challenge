@@ -67,11 +67,50 @@ describe("game", () => {
     expect(game.showScorecard()).toEqual([22, 15, 5]);
   });
 
-  it("can roll a perfect game", () => {
+  it("cant roll more than 10 frames", () => {
+    game = new Game();
+    for (let i = 0; i < 10; i++) {
+      game.roll(2);
+      game.roll(3);
+    }
+    expect(() => game.roll(1)).toThrow("You cannot roll more than 10 frames");
+  });
+
+  it("can bowl a perfect game", () => {
     game = new Game();
     for (let i = 0; i < 12; i++) {
       game.roll(10);
     }
-    expect(game.totalScore()).toEqual(300);
+    expect(game.calculateScorecard()).toEqual[
+      (30, 30, 30, 30, 30, 30, 30, 30, 30, 30)
+    ];
   });
+
+  it("can bowl and almost perfect game", () => {
+    game = new Game();
+    for (let i = 0; i < 11; i++) {
+      game.roll(10);
+    }
+    game.roll(9);
+    console.log(game.showScorecard());
+    expect(game.totalScore()).toEqual(299);
+  });
+
+  // it("cant roll more than 10 frames", () => {
+  //   game = new Game();
+  //   for (let i = 0; i < 12; i++) {
+  //     game.roll(10);
+  //   }
+  //   expect(game.calculateScorecard()).toEqual[
+  //     (30, 30, 30, 30, 30, 30, 30, 30, 30, 30)
+  //   ];
+  // });
+
+  // it("can roll a perfect game", () => {
+  //   game = new Game();
+  //   for (let i = 0; i < 12; i++) {
+  //     game.roll(10);
+  //   }
+  //   expect(game.totalScore()).toEqual(300);
+  // });
 });

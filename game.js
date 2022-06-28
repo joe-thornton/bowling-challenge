@@ -1,17 +1,20 @@
 const Frame = require("./frame");
 
 class Game {
-  constructor(frame = new Frame()) {
+  constructor(frame = new Frame(1)) {
     this.frames = [];
     this.frames.push(frame);
   }
 
-  newFrame(frame = new Frame()) {
+  newFrame(frame = new Frame(this.frames.length + 1)) {
     this.frames.push(frame);
   }
 
   roll(pins) {
     let currentFrame = this.frames.at(-1);
+    if (this.frames.length === 11) {
+      throw new Error("You cannot roll more than 10 frames");
+    }
     currentFrame.roll(pins);
     this.processFrameStatus(currentFrame);
   }
@@ -54,7 +57,7 @@ class Game {
   nextTwoRolls(currentFrameIndex) {
     let nextFrame = this.frames[currentFrameIndex + 1];
     if (nextFrame.hasTwoRolls() === true) {
-      return nextFrame.total();
+      return nextFrame.twoRollScore();
     } else {
       if (nextFrame.firstRoll() === 10) {
         let frameAfterNext = this.frames[currentFrameIndex + 2];
